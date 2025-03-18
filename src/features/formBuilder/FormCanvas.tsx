@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography } from '@mui/material';
@@ -11,8 +11,9 @@ import FormElementRenderer from './FormElementRenderer';
 const FormCanvas: React.FC = () => {
   const dispatch = useDispatch();
   const currentTemplate = useSelector((state: RootState) => state.form.currentTemplate);
+  const dropTargetRef = useRef<HTMLDivElement>(null);
 
-  const [{ isOver, canDrop }, drop] = useDrop({
+  const [{ isOver, canDrop }, dropRef] = useDrop({
     accept: 'formElement',
     drop: (item: { type: string }) => {
       if (!currentTemplate) return;
@@ -26,66 +27,66 @@ const FormCanvas: React.FC = () => {
       };
       dispatch(addElement(newElement));
     },
-    canDrop: () => !!currentTemplate,
     collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
     }),
+    canDrop: () => !!currentTemplate,
   });
 
-  if (!currentTemplate) {
-    return (
-      <Box
-        sx={{
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          p: 3,
-          border: '2px dashed',
-          borderColor: 'divider',
-          borderRadius: 1,
-        }}
-      >
-        <Typography variant="h6" color="text.secondary">
-          Create or select a form template to start building
-        </Typography>
+  // Connect the drop ref to our div
+  dropRef(dropTargetRef);
+
+  const dropAreaStyles = {
+    minHeight: '60vh',
+    height: '100%',
+    p: 2,
+    backgroundColor: isOver ? 'action.hover' : 'background.default',
+    transition: 'all 0.2s ease',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: currentTemplate?.elements.length === 0 ? 'center' : 'flex-start',
+    border: '2px dashed',
+    borderColor: isOver ? 'primary.main' : 'transparent',
+    position: 'relative',
+    '&::after': canDrop ? {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      pointerEvents: 'none',
+      zIndex: 1,
+      backgroundColor: 'transparent'
+    } : {}
+  };
+
+  const content = currentTemplate ? (
+    currentTemplate.elements.length === 0 ? (
+      <Typography variant="body1" color="text.secondary">
+        Drag and drop form elements here
+      </Typography>
+    ) : (
+      <Box sx={{ width: '100%' }}>
+        {currentTemplate.elements.map((element) => (
+          <FormElementRenderer key={element.id} element={element} />
+        ))}
       </Box>
-    );
-  }
+    )
+  ) : (
+    <Typography variant="h6" color="text.secondary">
+      Create or select a form template to start building
+    </Typography>
+  );
 
   return (
-    <Box
-      ref={drop}
-      sx={{
-        minHeight: '60vh',
-        p: 2,
-        backgroundColor: isOver && canDrop ? 'action.hover' : 'background.default',
-        transition: 'background-color 0.2s',
-        border: '2px dashed',
-        borderColor: isOver && canDrop ? 'primary.main' : 'divider',
-        borderRadius: 1,
-      }}
-    >
-      {currentTemplate.elements.length === 0 ? (
-        <Box
-          sx={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="body1" color="text.secondary">
-            Drag and drop form elements here
-          </Typography>
-        </Box>
-      ) : (
-        currentTemplate.elements.map((element) => (
-          <FormElementRenderer key={element.id} element={element} />
-        ))
-      )}
-    </Box>
+    <div ref={dropTargetRef} style={{ height: '100%' }}>
+      <Box sx={dropAreaStyles}>
+        {content}
+      </Box>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDrag } from 'react-dnd';
 import { Box, Typography, Paper, List, ListItem } from '@mui/material';
 import {
@@ -17,33 +17,40 @@ interface DraggableElementProps {
 }
 
 const DraggableElement: React.FC<DraggableElementProps> = ({ type, icon, label }) => {
-  const [{ isDragging }, drag] = useDrag({
+  const dragElementRef = useRef<HTMLDivElement>(null);
+  const [{ isDragging }, dragRef] = useDrag({
     type: 'formElement',
-    item: () => ({ type }),
+    item: { type },
     collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: monitor.isDragging(),
     }),
   });
 
+  // Connect the drag ref to our div
+  dragRef(dragElementRef);
+
   return (
-    <Box
-      ref={drag}
-      sx={{
-        p: 2,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        cursor: 'move',
-        opacity: isDragging ? 0.5 : 1,
-        mb: 1,
-        bgcolor: 'background.paper',
-        borderRadius: 1,
-        boxShadow: 1,
-      }}
-    >
-      {icon}
-      <Typography>{label}</Typography>
-    </Box>
+    <div ref={dragElementRef} style={{ width: '100%', cursor: 'move' }}>
+      <Paper
+        elevation={isDragging ? 0 : 1}
+        sx={{
+          p: 2,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          opacity: isDragging ? 0.5 : 1,
+          mb: 1,
+          backgroundColor: isDragging ? 'action.hover' : 'background.paper',
+          transition: 'all 0.2s ease',
+          '&:hover': {
+            backgroundColor: 'action.hover',
+          },
+        }}
+      >
+        {icon}
+        <Typography>{label}</Typography>
+      </Paper>
+    </div>
   );
 };
 
