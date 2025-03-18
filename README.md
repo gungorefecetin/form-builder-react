@@ -2,36 +2,49 @@
 
 A modern, drag-and-drop form builder application built with React and TypeScript. Create, customize, and manage forms with an intuitive user interface.
 
-![Form Builder Demo](demo.gif)
-
 ## Features
 
 - **Drag-and-Drop Interface**: Easily create forms by dragging and dropping elements
-- **Multiple Form Elements**:
+- **Layout Elements**:
+  - Title
+  - Subtitle
+  - Paragraph
+  - Spacer
+  - Separator
+- **Form Fields**:
   - Text Input
   - Number Input
-  - Email Input
   - Dropdown Select
-  - Radio Buttons
-  - Checkboxes
-- **Customizable Fields**:
-  - Custom labels
-  - Placeholders
+  - Date Picker
+  - Checkbox
+  - Text Area
+- **Rich Customization**:
+  - Field labels and placeholders
   - Required field validation
-  - Options for select and radio elements
-- **Form Preview**: Test your forms in real-time
-- **Form Submissions**: Collect and store form responses
-- **Modern UI**: Built with Material-UI components
-- **Type-Safe**: Written in TypeScript
+  - Custom validation rules (min/max, pattern matching)
+  - Text alignment for layout elements
+  - Spacing and margin controls
+  - Custom themes
+- **Form Management**:
+  - Preview forms in different device sizes
+  - Share forms via unique URLs
+  - Form analytics and statistics
+  - Form submission handling
+  - Success notifications
+- **Modern UI**:
+  - Material-UI components
+  - Responsive design
+  - Real-time preview
+  - Intuitive editing interface
 
 ## Tech Stack
 
-- React
+- React 18
 - TypeScript
 - Redux Toolkit (State Management)
 - React DnD (Drag and Drop)
-- Material-UI (Component Library)
-- Vite (Build Tool)
+- Material-UI v5
+- Vite
 
 ## Getting Started
 
@@ -62,48 +75,26 @@ The application will be available at `http://localhost:5173`
 
 ## Usage
 
-1. **Creating a Form**:
-   - Drag elements from the left panel onto the canvas
-   - Click the edit icon to customize element properties
-   - Add validation rules and required fields as needed
+1. **Creating Forms**:
+   - Click "Create New Form" to start a new form
+   - Drag layout elements or form fields from the left panel
+   - Click the edit icon on any element to customize its properties
 
-2. **Previewing Forms**:
-   - Switch to preview mode to test the form
-   - Fill out the form to ensure it works as expected
-   - Submit the form to store responses
+2. **Customizing Elements**:
+   - Modify labels, placeholders, and validation rules
+   - Set required fields
+   - Adjust spacing and alignment
+   - Configure dropdown options
 
-3. **Managing Forms**:
-   - Save forms as templates
-   - Edit existing forms
-   - View form submissions
+3. **Previewing and Sharing**:
+   - Click "Preview Form" to see the final result
+   - Test the form in different device sizes
+   - Copy the shareable URL to distribute the form
 
-## Project Structure
-
-```
-src/
-├── components/        # Reusable UI components
-├── features/
-│   └── formBuilder/  # Form builder feature components
-├── store/            # Redux store configuration
-├── types/            # TypeScript type definitions
-└── App.tsx          # Root component
-```
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript type checking
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+4. **Managing Submissions**:
+   - View form responses
+   - Track analytics and conversion rates
+   - Monitor device statistics
 
 ## License
 
