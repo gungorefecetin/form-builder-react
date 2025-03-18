@@ -19,6 +19,17 @@ const FormBuilder: React.FC = () => {
       id: uuidv4(),
       name: 'New Form',
       elements: [],
+      settings: {
+        submitButtonText: 'Submit',
+        showProgress: false,
+        enableAnalytics: false,
+        theme: {
+          primaryColor: '#1976d2',
+          backgroundColor: '#ffffff',
+          textColor: '#000000',
+        },
+      },
+      isPublished: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

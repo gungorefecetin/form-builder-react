@@ -1,19 +1,26 @@
 import React, { useRef } from 'react';
 import { useDrag } from 'react-dnd';
-import { Box, Typography, Paper, List, ListItem } from '@mui/material';
+import { Box, Typography, Paper, List, ListItem, Divider } from '@mui/material';
 import {
+  Title,
+  Subtitles,
+  Height,
+  HorizontalRule,
   TextFields,
   Numbers,
-  Email,
-  CheckBox,
-  RadioButtonChecked,
   ArrowDropDownCircle,
+  CalendarMonth,
+  CheckBox,
+  TextSnippet,
+  Article,
 } from '@mui/icons-material';
+import { ElementType } from '../../types/formTypes';
 
 interface DraggableElementProps {
-  type: string;
+  type: ElementType;
   icon: React.ReactNode;
   label: string;
+  category: 'layout' | 'form';
 }
 
 const DraggableElement: React.FC<DraggableElementProps> = ({ type, icon, label }) => {
@@ -26,7 +33,6 @@ const DraggableElement: React.FC<DraggableElementProps> = ({ type, icon, label }
     }),
   });
 
-  // Connect the drag ref to our div
   dragRef(dragElementRef);
 
   return (
@@ -55,22 +61,43 @@ const DraggableElement: React.FC<DraggableElementProps> = ({ type, icon, label }
 };
 
 const FormElementPalette: React.FC = () => {
-  const elements = [
-    { type: 'text', icon: <TextFields />, label: 'Text Input' },
-    { type: 'number', icon: <Numbers />, label: 'Number Input' },
-    { type: 'email', icon: <Email />, label: 'Email Input' },
-    { type: 'select', icon: <ArrowDropDownCircle />, label: 'Dropdown' },
-    { type: 'radio', icon: <RadioButtonChecked />, label: 'Radio Group' },
-    { type: 'checkbox', icon: <CheckBox />, label: 'Checkbox' },
+  const layoutElements: DraggableElementProps[] = [
+    { type: 'title', icon: <Title />, label: 'Title', category: 'layout' },
+    { type: 'subtitle', icon: <Subtitles />, label: 'Subtitle', category: 'layout' },
+    { type: 'spacer', icon: <Height />, label: 'Spacer', category: 'layout' },
+    { type: 'separator', icon: <HorizontalRule />, label: 'Separator', category: 'layout' },
+    { type: 'paragraph', icon: <Article />, label: 'Paragraph', category: 'layout' },
+  ];
+
+  const formElements: DraggableElementProps[] = [
+    { type: 'text', icon: <TextFields />, label: 'Text Input', category: 'form' },
+    { type: 'number', icon: <Numbers />, label: 'Number Input', category: 'form' },
+    { type: 'select', icon: <ArrowDropDownCircle />, label: 'Dropdown', category: 'form' },
+    { type: 'date', icon: <CalendarMonth />, label: 'Date Picker', category: 'form' },
+    { type: 'checkbox', icon: <CheckBox />, label: 'Checkbox', category: 'form' },
+    { type: 'textarea', icon: <TextSnippet />, label: 'Text Area', category: 'form' },
   ];
 
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Form Elements
+        Layout Elements
       </Typography>
       <List>
-        {elements.map((element) => (
+        {layoutElements.map((element) => (
+          <ListItem key={element.type} disablePadding sx={{ mb: 1 }}>
+            <DraggableElement {...element} />
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider sx={{ my: 2 }} />
+
+      <Typography variant="h6" gutterBottom>
+        Form Fields
+      </Typography>
+      <List>
+        {formElements.map((element) => (
           <ListItem key={element.type} disablePadding sx={{ mb: 1 }}>
             <DraggableElement {...element} />
           </ListItem>
